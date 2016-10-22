@@ -1,4 +1,5 @@
 import Element from './Virtual-DOM/element';
+import './Virtual-DOM/VTree';
 
 export default class Hake {
   constructor() {

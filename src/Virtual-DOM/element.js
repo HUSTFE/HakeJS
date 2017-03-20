@@ -26,14 +26,15 @@ export default class Element {
    * Constructor of Element
    * @param tagName String
    * @param attr Object
-   *
+   * @param domElement HTMLElement
    */
 
-  constructor(tagName, attr) {
+  constructor(tagName, attr, domElement) {
     if (typeof tagName === 'string' && typeof attr === 'object' && tagName !== '') {
       this.tagName = tagName;
       this.attr = attr;
       this.children = [];
+      this.domElement = domElement;
     } else {
       console.error("[Hake Error]: Virtual-DOM element isn't created correctly.");
     }

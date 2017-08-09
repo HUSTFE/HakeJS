@@ -1,14 +1,15 @@
-import Element from './Virtual-DOM/element';
-import './Virtual-DOM/VTree';
+import data from './data';
+import dom from './dom';
+import observe from './observe';
+import parse from './parse';
 
 export default class Hake {
   constructor() {
     this._name = 'Hake';
-    this.element = Element;
     this._version = '0.0.0';
-  }
-
-  get name() {
-    return this._name + ' ver.' + this._version;
+    this.data = data;
+    this.dom = dom;
+    this.observe = observe;
+    this.parse = parse;
   }
 }

@@ -13,8 +13,7 @@ function getAttr(el, name) {
 function getAttrs(el) {
   let res = {};
 
-  for (let i in el.attribute)
-    res[el.attribute[i].name] = el.attribute[i].value;
+  for (let i in el.attribute) {res[el.attribute[i].name] = el.attribute[i].value;}
 
   return res;
 }

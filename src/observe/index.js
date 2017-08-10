@@ -1,13 +1,15 @@
 function object(obj, callback) {
+  let __obj = Object.assign({}, obj);
+
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       Object.defineProperty(obj, key, {
         get() {
-          return obj[key];
+          return __obj[key];
         },
         set(val) {
-          obj[key] = val;
-          callback || callback.apply(obj, val, key);
+          __obj[key] = val;
+          callback || callback.apply(obj, key, val);
         }
       });
     }
@@ -15,12 +17,14 @@ function object(obj, callback) {
 }
 
 function key(obj, key, callback) {
+  let pValue;
+
   return Object.defineProperty(obj, key, {
     get() {
-      return obj[key];
+      return pValue;
     },
     set(val) {
-      obj[key] = val;
+      pValue = val;
       callback || callback.apply(obj, val);
     }
   });
@@ -37,8 +41,7 @@ function OArray(callback) {
     },
     set(val) {
       if (parseInt(val) === val) {
-        for (let i in this)
-          (i >= val) || (delete this[i]);
+        for (let i in this) {(i >= val) || (delete this[i]);}
 
         for (let i = 0; i < val; i += 1) {
           this[i] === undefined || (this[i] = this[i]);
@@ -52,8 +55,7 @@ function OArray(callback) {
   this.prototype.fill = function (val, start, end) {
     let s = start || 0, e = end || this.length;
 
-    for (let i in this)
-      (parseInt(i) === i) && (btw(this[i], s, e)) && (this[i] = val);
+    for (let i in this) {(parseInt(i) === i) && (btw(this[i], s, e)) && (this[i] = val);}
 
     callback(this);
   };

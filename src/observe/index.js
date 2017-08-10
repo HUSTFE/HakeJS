@@ -41,8 +41,7 @@ function OArray(callback) {
     },
     set(val) {
       if (parseInt(val) === val) {
-        for (let i in this)
-          (i >= val) || (delete this[i]);
+        for (let i in this) {(i >= val) || (delete this[i]);}
 
         for (let i = 0; i < val; i += 1) {
           this[i] === undefined || (this[i] = this[i]);
@@ -56,8 +55,7 @@ function OArray(callback) {
   this.prototype.fill = function (val, start, end) {
     let s = start || 0, e = end || this.length;
 
-    for (let i in this)
-      (parseInt(i) === i) && (btw(this[i], s, e)) && (this[i] = val);
+    for (let i in this) {(parseInt(i) === i) && (btw(this[i], s, e)) && (this[i] = val);}
 
     callback(this);
   };

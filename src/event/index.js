@@ -24,9 +24,9 @@ function addEvent(event, target, callback) {
 
 function trigEvent(event, target) {
   if (target.dispatchEvent) {
-    let event = new Event(event);
+    let e = new Event(event);
 
-    target.dispatchEvent(event);
+    target.dispatchEvent(e);
   } if (eventpool[event]) {
     eventpool[event].callback.apply(eventpool[event].target, [eventpool[event].target]);
   } else {

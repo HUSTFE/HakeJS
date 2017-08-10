@@ -1,13 +1,15 @@
 function object(obj, callback) {
+  let __obj = Object.assign({}, obj);
+
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       Object.defineProperty(obj, key, {
         get() {
-          return obj[key];
+          return __obj[key];
         },
         set(val) {
-          obj[key] = val;
-          callback || callback.apply(obj, val, key);
+          __obj[key] = val;
+          callback || callback.apply(obj, key, val);
         }
       });
     }
@@ -15,12 +17,14 @@ function object(obj, callback) {
 }
 
 function key(obj, key, callback) {
+  let pValue;
+
   return Object.defineProperty(obj, key, {
     get() {
-      return obj[key];
+      return pValue;
     },
     set(val) {
-      obj[key] = val;
+      pValue = val;
       callback || callback.apply(obj, val);
     }
   });

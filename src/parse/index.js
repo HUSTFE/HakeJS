@@ -96,10 +96,11 @@ function parseHake(str) {
 }
 
 function DataBlock(str) {
-  this.origin = '';
+  this.origin = str;
   this.related = [];
   let gen = '';
   let tmp = '';
+  let blindThis = false;
 
   for (let i = 0; str[i]; i += 1) {
     if (!syntax.test(str[i])) {
@@ -109,23 +110,53 @@ function DataBlock(str) {
         i++;
       }
     } else {
+      console.log(blindThis)
+      if (str[i] === ']') {
+        blindThis = false;
+        gen += tmp;
+        tmp = '';
+      }
+
+      if (/\./.test(tmp)) {
+        gen += tmp;
+        tmp = '';
+      }
+
       if (tmp && !parseInt(tmp[0]) && tmp[0] !== '0') {
-        gen += 'this.' + tmp;
-        this.related.push(tmp);
+        if (!blindThis) {
+          gen += 'this.' + tmp;
+          this.related.push(tmp);
+        } else {
+          gen += tmp;
+        }
         tmp = '';
       } else if (parseInt(tmp[0]) || tmp === '0') {
         gen += tmp;
         tmp = '';
       }
 
+      if (str[i] === '[') {
+        blindThis = true;
+      }
+
       gen += str[i];
     }
   }
 
-  if (tmp && !parseInt(tmp[0]) && tmp[0] !== '0') {
-    gen += 'this.' + tmp;
-    this.related.push(tmp);
+  if (/\./.test(tmp)) {
+    gen += tmp;
     tmp = '';
+  }
+
+  if (tmp && !parseInt(tmp[0]) && tmp[0] !== '0') {
+    if (!blindThis) {
+      gen += 'this.' + tmp;
+      this.related.push(tmp);
+    } else {
+      gen += tmp;
+    }
+  } else if (parseInt(tmp[0]) || tmp === '0') {
+    gen += tmp;
   }
 
   this.generate = Function('return ' + gen);

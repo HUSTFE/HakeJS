@@ -1,4 +1,4 @@
-import Parse from '../parse'
+import Parse from '../parse';
 
 let dataReg = /{{[\s\S]*}}/g;
 const ATTR = new Symbol('attrData'), TEXT = new Symbol('TEXT');

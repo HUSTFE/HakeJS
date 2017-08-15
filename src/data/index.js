@@ -1,4 +1,7 @@
-let dataReg = /{{[^(?!.*{{)]*}}/g;
+import Parse from '../parse'
+
+let dataReg = /{{[\s\S]*}}/g;
+const ATTR = new Symbol('attrData'), TEXT = new Symbol('TEXT');
 
 function dataHash(str) {
   let hash = 1713302033171, i, ch;
@@ -16,12 +19,56 @@ function hasData(str) {
   return dataReg.test(str);
 }
 
-function dataEvent(target, content) {
+function dataSearch(el) {
+  let children = el.querySelectorAll('*');
+  let res = [];
 
+  for (let i in children) {
+    for (let j in children[i].attributes) {
+      if (hasData(children[i].attributes[j])) {
+        res.push({
+          type: ATTR,
+          target: children[i],
+          attrName: children[i].attributes[j].name,
+          data: Parse.parseData(children[i].attributes[j].value)
+        });
+      }
+    }
+
+    for (let j in children[i].childNodes) {
+      if (children[i].childNodes[j].nodeName === '#text' && hasData(children[i].childNodes[j].nodeValue)) {
+        res.push({
+          type: TEXT,
+          target: children[i].childNodes[j],
+          data: Parse.parseData(children[i].childNodes[j].nodeValue)
+        });
+      }
+    }
+  }
+
+  return res;
+}
+
+function dataBind(sArr, data) {
+  let dataMap = {};
+
+  for (let i in sArr) {
+    if (parseInt(i)) {
+      for (let j in sArr[i].data) {
+        if (sArr[i].data[j].related) {
+          sArr[i].data[j].related.forEach((e) => {
+            data.hasOwnProperty(e) && (dataMap[e] || (dataMap[e] = [])) && data[e].push(sArr[i]);
+          });
+        }
+      }
+    }
+  }
+
+  return dataMap;
 }
 
 let data = {
-  dataHash, hasData, dataEvent
+  dataHash, hasData, dataSearch, dataBind
 };
 
 export default data;

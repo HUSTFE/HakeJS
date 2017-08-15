@@ -110,7 +110,6 @@ function DataBlock(str) {
         i++;
       }
     } else {
-      console.log(blindThis)
       if (str[i] === ']') {
         blindThis = false;
         gen += tmp;

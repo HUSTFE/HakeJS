@@ -1,7 +1,7 @@
 // /{{[^(?!.*{{)]*}}/g test{{}}
 
 const singleTag = /area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr/;
-const syntax = / |\+|-|\*|\/|%|=|\||&|\n|{|}|<|>|\^|!|\?|:|,|;|~|\[|]/;
+const syntax = /[ +|\-*\/%=&\n{}<>^!?:,;~\[\]\\]/;
 
 // Lazy Easy DOM parser
 
@@ -97,23 +97,68 @@ function parseHake(str) {
 
 function DataBlock(str) {
   this.origin = str;
-  this.generate = Function('return ' + str);
   this.related = [];
-
+  let gen = '';
   let tmp = '';
+  let blindThis = false;
 
   for (let i = 0; str[i]; i += 1) {
     if (!syntax.test(str[i])) {
       tmp += str[i];
     } else if (str[i] === '/' && str[i + 1] === '/') {
-      while (str[i] !== '\n') {
+      while (str[i] !== '\n' && str[i]) {
         i++;
       }
     } else {
-      tmp || this.related.push(tmp);
-      tmp = '';
+      if (str[i] === ']') {
+        blindThis = false;
+        gen += tmp;
+        tmp = '';
+      }
+
+      if (/\./.test(tmp)) {
+        gen += tmp;
+        tmp = '';
+      }
+
+      if (tmp && !parseInt(tmp[0]) && tmp[0] !== '0') {
+        if (!blindThis) {
+          gen += 'this.' + tmp;
+          this.related.push(tmp);
+        } else {
+          gen += tmp;
+        }
+        tmp = '';
+      } else if (parseInt(tmp[0]) || tmp === '0') {
+        gen += tmp;
+        tmp = '';
+      }
+
+      if (str[i] === '[') {
+        blindThis = true;
+      }
+
+      gen += str[i];
     }
   }
+
+  if (/\./.test(tmp)) {
+    gen += tmp;
+    tmp = '';
+  }
+
+  if (tmp && !parseInt(tmp[0]) && tmp[0] !== '0') {
+    if (!blindThis) {
+      gen += 'this.' + tmp;
+      this.related.push(tmp);
+    } else {
+      gen += tmp;
+    }
+  } else if (parseInt(tmp[0]) || tmp === '0') {
+    gen += tmp;
+  }
+
+  this.generate = Function('return ' + gen);
 }
 
 function parseData(str) {
@@ -131,7 +176,7 @@ function parseData(str) {
     } else tmp += str[i];
   }
 
-  return str;
+  return res;
 }
 
 let parse = {

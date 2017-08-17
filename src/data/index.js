@@ -1,4 +1,5 @@
 import Parse from '../parse';
+import Observe from '../observe';
 
 let dataReg = /{{[\s\S]*}}/g;
 const ATTR = new Symbol('attrData'), TEXT = new Symbol('TEXT');
@@ -67,8 +68,28 @@ function dataBind(sArr, data) {
   return dataMap;
 }
 
+function dataObserve(data, el) {
+  const dataMap = dataBind(dataSearch(el), data);
+
+  return Observe.object(data, (key, val) => {
+    dataMap[key].generate();
+  });
+}
+
+function dataDiff(oldData, newData, res) {
+  let diff = [];
+
+  for (let i = 0; i < res.length; i++) {
+    if (res[i].generate) {
+      if (res[i].generate.apply(oldData) !== res[i].generate.apply(newData)) {
+        diff.push(res[i]);
+      }
+    }
+  }
+}
+
 let data = {
-  dataHash, hasData, dataSearch, dataBind
+  dataHash, hasData, dataSearch, dataBind, dataDiff, dataObserve
 };
 
 export default data;

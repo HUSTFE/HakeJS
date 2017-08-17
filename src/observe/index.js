@@ -66,7 +66,7 @@ function OArray(callback, top) {
 
     for (let i in this) {(parseInt(i) === i) && (btw(this[i], s, e)) && (this[i] = val);}
 
-    callback(this, top);
+    callback(top);
   };
 
   this.prototype.pop = function () {
@@ -74,7 +74,7 @@ function OArray(callback, top) {
       let res = this[this.length - 1];
 
       this.length -= 1;
-      callback(this, top);
+      callback(top);
       return res;
     }
   };
@@ -82,7 +82,7 @@ function OArray(callback, top) {
   this.prototype.push = function (val) {
     this[this.length] = val;
     this.length += 1;
-    callback(this, top);
+    callback(top);
     return this;
   };
 
@@ -97,7 +97,7 @@ function OArray(callback, top) {
       }
     }
 
-    callback(this, top);
+    callback(top);
   };
 
   this.prototype.shift = function () {
@@ -109,7 +109,7 @@ function OArray(callback, top) {
       }
 
       this.length -= 1;
-      callback(this, top);
+      callback(top);
       return res;
     }
   };
@@ -136,7 +136,7 @@ function OArray(callback, top) {
 
     this.length = arr.length;
 
-    callback(this, top);
+    callback(top);
 
     return this;
   };
@@ -146,7 +146,7 @@ function OArray(callback, top) {
     let res = Array.splice.apply(arr, arguments);
 
     this.modifiedByArray(arr);
-    callback(this, top);
+    callback(top);
     return res;
   };
 
@@ -155,7 +155,7 @@ function OArray(callback, top) {
     let res = Array.unshift.apply(arr, arguments);
 
     this.modifiedByArray(arr);
-    callback(this, top);
+    callback(top);
     return res;
   };
 }

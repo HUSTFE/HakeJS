@@ -5,7 +5,20 @@
 
 import Msg from '../message';
 
+/**
+ * A pool to store event that not native
+ * @type {object}
+ */
+
 let eventpool = {};
+
+/**
+ * Add event in eventpool
+ * @param {string} event
+ * @param {function} callback
+ * @param {*} target
+ * @private
+ */
 
 function __addListener(event, callback, target) {
   eventpool[event] && Msg.warn(`event: ${event} will be overwrite.`);
@@ -15,9 +28,24 @@ function __addListener(event, callback, target) {
   };
 }
 
+/**
+ * Remove event in eventpool
+ * @param {string} event
+ * @param {function} callback
+ * @param {*} target
+ * @private
+ */
+
 function __removeListener(event, callback, target) {
   delete eventpool[event];
 }
+
+/**
+ * Add event to anything (some just fake event)
+ * @param {string} event
+ * @param {function} callback
+ * @param {*} target
+ */
 
 function addEvent(event, target, callback) {
   if (target.addEventListener) {
@@ -26,6 +54,12 @@ function addEvent(event, target, callback) {
     __addListener(event, callback, target);
   }
 }
+
+/**
+ * Run a event on target (fake events don't care target)
+ * @param {string} event
+ * @param {*} target
+ */
 
 function trigEvent(event, target) {
   if (target.dispatchEvent) {
@@ -38,6 +72,13 @@ function trigEvent(event, target) {
     Msg.error(`event: ${event} does not exist`);
   }
 }
+
+/**
+ * Remove event on anything (fake events don't care target and callback)
+ * @param {string} event
+ * @param {function} callback
+ * @param {*} target
+ */
 
 function removeEvent(event, target, callback) {
   if (target.removeEventListener) {

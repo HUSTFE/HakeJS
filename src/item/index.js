@@ -8,6 +8,10 @@ import Data from '../data';
 import Msg from '../message';
 import Parse from '../parse';
 
+/**
+ * Origin setting for Hake Component.
+ */
+
 const defaultOption = {
   data: {},
   shadowDOM: false,
@@ -19,6 +23,11 @@ const defaultOption = {
   updated: ()=> {},
   destroyed: ()=> {}
 };
+
+/**
+ * Hake component is called HakeItem.
+ * @class
+ */
 
 export default class HakeItem {
   constructor(option) {

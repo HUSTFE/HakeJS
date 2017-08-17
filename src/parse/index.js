@@ -3,10 +3,27 @@
  * @author Dominic Ming <dom@mingdom.cn>
  */
 
+/**
+ * To match single tag.
+ * @constant
+ * @type {RegExp}
+ */
+
 const singleTag = /area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr/;
+
+/**
+ * To skip syntax that not involved in data.
+ * @constant
+ * @type {RegExp}
+ */
+
 const syntax = /[ +|\-*\/%=&\n{}<>^!?:,;~\[\]\\]/;
 
-// Lazy Easy DOM parser
+/**
+ * Use browser native api to parse HTML, Lazy Easy DOM parser.
+ * @param {string} str
+ * @return {HTMLElement}
+ */
 
 function parseDOM(str) {
   let el = document.createElement('div');
@@ -14,6 +31,13 @@ function parseDOM(str) {
   el.innerHTML = str;
   return el.childNodes[0];
 }
+
+/**
+ * Read tag name and return it with a char after it
+ * @param {number} startIndex
+ * @param {string} str
+ * @return {{tag: string, end: string}|boolean}
+ */
 
 function readTag(startIndex, str) {
   let res = '', i;
@@ -24,6 +48,12 @@ function readTag(startIndex, str) {
 
   return {tag: res, end: str[i]} || false;
 }
+
+/**
+ * Parse Hake string and return HTMLElement.
+ * @param {string} str
+ * @return {HTMLElement}
+ */
 
 function parseHake(str) {
   let res = '', nowTag = [], tmpTag, inString = '';
@@ -98,6 +128,12 @@ function parseHake(str) {
   return parseDOM(res);
 }
 
+/**
+ * DataBlock contain origin data, generator and related variable
+ * @param {string} str
+ * @constructor
+ */
+
 function DataBlock(str) {
   this.origin = str;
   this.related = [];
@@ -163,6 +199,12 @@ function DataBlock(str) {
 
   this.generate = Function('return ' + gen);
 }
+
+/**
+ * Parse data string contain '{{...}}' and slice it into a string
+ * @param {string} str
+ * @return {Array}
+ */
 
 function parseData(str) {
   let res = [], tmp = '';

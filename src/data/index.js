@@ -1,8 +1,30 @@
+/**
+ * @file Handle data bind, search, render and etc.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 import Parse from '../parse';
 import Observe from '../observe';
 
+/**
+ * Used to detect {{}} in string
+ * @type {RegExp}
+ */
+
 let dataReg = /{{[\s\S]*}}/g;
+
+/**
+ * DataBlock Type
+ * @type {Symbol}
+ */
+
 const ATTR = new Symbol('attrData'), TEXT = new Symbol('TEXT');
+
+/**
+ * Hash a string to a code.
+ * @param {string} str
+ * @return {string}
+ */
 
 function dataHash(str) {
   let hash = 1713302033171, i, ch;
@@ -16,9 +38,21 @@ function dataHash(str) {
   return (hash).toString(16);
 }
 
+/**
+ * If string contain {{}}
+ * @param {string} str
+ * @return {boolean}
+ */
+
 function hasData(str) {
   return dataReg.test(str);
 }
+
+/**
+ * Search data bind in element, return a array with data info.
+ * @param {HTMLElement} el
+ * @return {Array}
+ */
 
 function dataSearch(el) {
   let children = el.querySelectorAll('*');
@@ -50,6 +84,13 @@ function dataSearch(el) {
   return res;
 }
 
+/**
+ * Use dataSearch result to bind a data object, return a related map.
+ * @param {array} sArr
+ * @param {object} data
+ * @return {object}
+ */
+
 function dataBind(sArr, data) {
   let dataMap = {};
 
@@ -68,6 +109,13 @@ function dataBind(sArr, data) {
   return dataMap;
 }
 
+/**
+ * Observing data from a element
+ * @param {object} data
+ * @param {HTMLElement} el
+ * @return {Object}
+ */
+
 function dataObserve(data, el) {
   const dataMap = dataBind(dataSearch(el), data);
 
@@ -75,6 +123,13 @@ function dataObserve(data, el) {
     dataMap[key].generate();
   });
 }
+
+/**
+ * diff the old data and new data to return difference array
+ * @param oldData
+ * @param newData
+ * @param res
+ */
 
 function dataDiff(oldData, newData, res) {
   let diff = [];

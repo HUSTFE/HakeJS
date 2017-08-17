@@ -1,3 +1,16 @@
+/**
+ * @file Provide simple object and array observation.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
+/**
+ * Observe Object with call back, and only return top level key.
+ * @param {object} obj
+ * @param {function} callback
+ * @param {string} top
+ * @return {object}
+ */
+
 function object(obj, callback, top) {
   let __obj = Object.assign({}, obj);
 
@@ -25,6 +38,14 @@ function object(obj, callback, top) {
   }
 }
 
+/**
+ * Only observe special key change, not care about its children.
+ * @param obj
+ * @param key
+ * @param callback
+ * @return {*}
+ */
+
 function key(obj, key, callback) {
   let pValue;
 
@@ -39,11 +60,30 @@ function key(obj, key, callback) {
   });
 }
 
+/**
+ * Return if a <= val < b .
+ * @param {number} val
+ * @param {number} a
+ * @param {number} b
+ * @return {boolean}
+ */
+
 function btw(val, a, b) {
   return val >= a && val < b;
 }
 
+/**
+ * Observable array, not the real one.
+ * @param {function} callback
+ * @param {string} top
+ * @constructor
+ */
+
 function OArray(callback, top) {
+  /**
+   * When length change, the OArray change.
+   */
+
   Object.defineProperty(this, length, {
     get() {
       return this.length;
@@ -61,6 +101,13 @@ function OArray(callback, top) {
     }
   });
 
+  /**
+   * As the native fill(), with callback
+   * @param {*} val
+   * @param {number} start
+   * @param {number} end
+   */
+
   this.prototype.fill = function (val, start, end) {
     let s = start || 0, e = end || this.length;
 
@@ -68,6 +115,11 @@ function OArray(callback, top) {
 
     callback(top);
   };
+
+  /**
+   * As the native pop(), with callback
+   * @return {*}
+   */
 
   this.prototype.pop = function () {
     if (this.length) {
@@ -79,12 +131,22 @@ function OArray(callback, top) {
     }
   };
 
+  /**
+   * As the native push(), with callback
+   * @param val
+   * @return {OArray}
+   */
+
   this.prototype.push = function (val) {
     this[this.length] = val;
     this.length += 1;
     callback(top);
     return this;
   };
+
+  /**
+   * As the native reverse(), with callback
+   */
 
   this.prototype.reverse = function () {
     let len = this.length - 1, tmp;
@@ -100,6 +162,11 @@ function OArray(callback, top) {
     callback(top);
   };
 
+  /**
+   * As the native shift(), with callback
+   * @return {*}
+   */
+
   this.prototype.shift = function () {
     if (this.length) {
       let res = this[0];
@@ -114,6 +181,11 @@ function OArray(callback, top) {
     }
   };
 
+  /**
+   * Transform OArray to Array.
+   * @return {Array}
+   */
+
   this.prototype.toArray = function () {
     let arr = [];
 
@@ -123,6 +195,12 @@ function OArray(callback, top) {
 
     return arr;
   };
+
+  /**
+   * extend array to OArray
+   * @param {array} arr
+   * @return {OArray}
+   */
 
   this.prototype.modifiedByArray = function (arr) {
     for (let i = 0; i < arr.length; i += 1) {
@@ -141,6 +219,11 @@ function OArray(callback, top) {
     return this;
   };
 
+  /**
+   * As the native splice(), with callback
+   * @return {array}
+   */
+
   this.prototype.splice = function () {
     let arr = this.toArray();
     let res = Array.splice.apply(arr, arguments);
@@ -149,6 +232,10 @@ function OArray(callback, top) {
     callback(top);
     return res;
   };
+
+  /**
+   * As the native unshift(), with callback
+   */
 
   this.prototype.unshift = function () {
     let arr = this.toArray();
@@ -159,6 +246,14 @@ function OArray(callback, top) {
     return res;
   };
 }
+
+/**
+ * Observe array with call back, and only return top level key.
+ * @param {array} arr
+ * @param {function} callback
+ * @param {string} top
+ * @return {OArray}
+ */
 
 function array(arr, callback, top) {
   return (new OArray(callback, top)).modifiedByArray(arr);

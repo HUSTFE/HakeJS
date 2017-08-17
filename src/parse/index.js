@@ -1,4 +1,7 @@
-// /{{[^(?!.*{{)]*}}/g test{{}}
+/**
+ * @file All of the string handler is here, parse Hake, HTML and data syntax inside.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
 
 const singleTag = /area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr/;
 const syntax = /[ +|\-*\/%=&\n{}<>^!?:,;~\[\]\\]/;

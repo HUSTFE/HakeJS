@@ -1,3 +1,8 @@
+/**
+ * @file Simple DOM function short cut, but may not use in main of HakeJS.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 function getOne(selector) {
   return document.querySelector(selector);
 }

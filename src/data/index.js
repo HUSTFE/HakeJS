@@ -1,3 +1,8 @@
+/**
+ * @file Handle data bind, search, render and etc.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 import Parse from '../parse';
 import Observe from '../observe';
 

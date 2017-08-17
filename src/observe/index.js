@@ -1,3 +1,8 @@
+/**
+ * @file Provide simple object and array observation.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 function object(obj, callback, top) {
   let __obj = Object.assign({}, obj);
 

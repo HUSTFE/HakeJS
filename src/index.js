@@ -1,3 +1,8 @@
+/**
+ * @file Main enter of HakeJS, now just export all of module.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 import data from './data';
 import dom from './dom';
 import observe from './observe';

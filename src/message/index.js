@@ -1,3 +1,8 @@
+/**
+ * @file message api for HakeJS, will extend later.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 let msgStack = [];
 
 function error(msg) {

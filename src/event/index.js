@@ -1,3 +1,8 @@
+/**
+ * @file Simple event system for HakeJS, but not sure really support.
+ * @author Dominic Ming <dom@mingdom.cn>
+ */
+
 import Msg from '../message';
 
 let eventpool = {};

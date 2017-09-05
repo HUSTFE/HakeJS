@@ -1,5 +1,7 @@
 # HakeJS
-<img src="http://39.108.79.219/wp-content/uploads/2017/09/Hakejs-768x384.png" style="width:20rem" />
+
+<img src="http://39.108.79.219/wp-content/uploads/2017/09/Hakejs-768x384.png" style="width:200px" />
+
 > Unfinished by Dominic Ming
 
 - [HakeJS](#hakejs)

@@ -1,10 +1,10 @@
 # HakeJS
-![](http://39.108.79.219/wp-content/uploads/2017/09/Hakejs-768x384.png)
+<img src="http://39.108.79.219/wp-content/uploads/2017/09/Hakejs-768x384.png" style="width:20rem" />
 > Unfinished by Dominic Ming
 
 - [HakeJS](#hakejs)
   * [What is HakeJS](#what-is-hakejs)
-  * [HakeJS feature](#hakejs-feature)
+  * [HakeJS feature](#hakejs-featuacre)
   * [About Hake](#about-hake)
   * [HakeJS Doc](#hakejs-doc)
     + [Hake](#hake)

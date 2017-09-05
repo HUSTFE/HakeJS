@@ -15,10 +15,10 @@ let dataReg = /{{[\s\S]*}}/g;
 
 /**
  * DataBlock Type
- * @type {Symbol}
+ * @type {string}
  */
 
-const ATTR = new Symbol('attrData'), TEXT = new Symbol('TEXT');
+const ATTR = 'ATTR', TEXT = 'TEXT';
 
 /**
  * Hash a string to a code.

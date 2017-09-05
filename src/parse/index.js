@@ -42,7 +42,7 @@ function parseDOM(str) {
 function readTag(startIndex, str) {
   let res = '', i;
 
-  for (i = startIndex; str[i] !== ' ' && str[i] !== '{' && str[i] !== '('; i += 1) {
+  for (i = startIndex; str[i] !== ' ' && str[i] !== '{' && str[i] !== '(' && str[i] !== ')'; i += 1) {
     res += str[i];
   }
 
@@ -56,9 +56,9 @@ function readTag(startIndex, str) {
  */
 
 function parseHake(str) {
-  let res = '', nowTag = [], tmpTag, inString = '';
+  let res = '', nowTag = [], tmpTag, inString = '', len = str.length;
 
-  for (let i = 0; str[i]; i++) {
+  for (let i = 0; i < len; i++) {
     switch (str[i]) {
       case '(':
         nowTag.push(readTag(i + 1, str));
@@ -68,11 +68,14 @@ function parseHake(str) {
         } else if (nowTag[nowTag.length - 1].end === '(') {
           res += '<' + nowTag[nowTag.length - 1].tag + '>';
           i += nowTag[nowTag.length - 1].tag.length;
+        } else if (nowTag[nowTag.length - 1].end === ')') {
+          res += '<' + nowTag[nowTag.length - 1].tag + '>';
+          i += nowTag[nowTag.length - 1].tag.length;
         } else res += '<';
         break;
       case ')':
         tmpTag = nowTag.pop();
-        res += singleTag.test(tmpTag.tag) ? '/>' : ('<\/' + tmpTag.tag + '>');
+        res += singleTag.test(tmpTag.tag) ? '' : ('<\/' + tmpTag.tag + '>');
         break;
       case '"':
         if (inString === '"') {
@@ -108,7 +111,6 @@ function parseHake(str) {
           } else {
             if (nowTag[nowTag.length - 1].end === '{') {
               res += '>';
-              i++;
             } else {
               res += ' ';
             }
